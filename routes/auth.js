@@ -12,7 +12,7 @@ const generateToken = (id, role) => {
   })
 }
 
-// ─── STUDENT REGISTER ───────────────────────────────
+// STUDENT REGISTER 
 router.post('/student/register', async (req, res) => {
   try {
     const { name, email, phone, password, course, state } = req.body
@@ -47,7 +47,7 @@ router.post('/student/register', async (req, res) => {
   }
 })
 
-// ─── STUDENT LOGIN ───────────────────────────────────
+// STUDENT LOGIN 
 router.post('/student/login', async (req, res) => {
   try {
     const { email, password } = req.body
@@ -79,7 +79,7 @@ router.post('/student/login', async (req, res) => {
   }
 })
 
-// ─── ADMIN LOGIN ─────────────────────────────────────
+// ADMIN LOGIN
 router.post('/admin/login', async (req, res) => {
   try {
     const { email, password } = req.body

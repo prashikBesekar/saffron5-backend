@@ -66,7 +66,7 @@ router.post('/setup', async (req, res) => {
   try {
     const { name, email, password, setupKey } = req.body
 
-    if (setupKey !== 'SAFFRON5SETUP2025') {
+    if (setupKey !== 'SAFFRON5SETUP2026') {
       return res.status(403).json({ message: 'Invalid setup key.' })
     }
 
@@ -81,6 +81,49 @@ router.post('/setup', async (req, res) => {
     })
 
     res.status(201).json({ message: 'Admin created!', admin: { name: admin.name, email: admin.email } })
+  } catch (err) {
+    res.status(500).json({ message: 'Server error.', error: err.message })
+  }
+})
+
+// Approve student and unlock course
+router.post('/enroll-student', protectAdmin, async (req, res) => {
+  try {
+    const { applicationId, studentEmail, studentPhone, courseName } = req.body
+
+    // 1. Update application status to enrolled
+    await Application.findByIdAndUpdate(applicationId, {
+      status: 'enrolled'
+    })
+
+    // 2. Find student account by email or phone
+    let student = await Student.findOne({
+      $or: [
+        { email: studentEmail },
+        { phone: studentPhone }
+      ]
+    })
+
+    // 3. If student has an account — update their status
+    if (student) {
+      await Student.findByIdAndUpdate(student._id, {
+        status: 'approved',
+        course: courseName,
+      })
+
+      return res.json({
+        message: `✅ Student enrolled successfully! Course unlocked for ${student.name}.`,
+        hasAccount: true,
+        studentName: student.name,
+      })
+    }
+
+    // 4. If no account yet — just update application
+    return res.json({
+      message: `✅ Application marked as enrolled. Student needs to register at /register to access course.`,
+      hasAccount: false,
+    })
+
   } catch (err) {
     res.status(500).json({ message: 'Server error.', error: err.message })
   }
