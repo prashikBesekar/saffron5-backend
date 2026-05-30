@@ -24,6 +24,7 @@ app.use(cors({
 app.use('/api/auth', require('./routes/auth'))
 app.use('/api/applications', require('./routes/applications'))
 app.use('/api/admin', require('./routes/admin'))
+app.use('/api/course-content', require('./routes/courseContent'))
 
 // Test route
 app.get('/', (req, res) => {
