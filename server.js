@@ -3,6 +3,7 @@ const mongoose = require('mongoose')
 const cors = require('cors')
 require('dotenv').config()
 
+
 const app = express()
 
 // Middleware
@@ -10,7 +11,8 @@ app.use(cors({
   origin: 'http://localhost:5173', // your React app
   credentials: true,
 }))
-app.use(express.json())
+app.use(express.json({ limit: '50mb' }))
+app.use(express.urlencoded({ limit: '50mb', extended: true }))
 app.use(cors({
   origin: [
     'http://localhost:5173',
@@ -25,6 +27,7 @@ app.use('/api/auth', require('./routes/auth'))
 app.use('/api/applications', require('./routes/applications'))
 app.use('/api/admin', require('./routes/admin'))
 app.use('/api/course-content', require('./routes/courseContent'))
+app.use('/api/blogs', require('./routes/blogs'))
 
 // Test route
 app.get('/', (req, res) => {
