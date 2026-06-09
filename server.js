@@ -16,7 +16,7 @@ app.use(express.urlencoded({ limit: '50mb', extended: true }))
 app.use(cors({
   origin: [
     'http://localhost:5173',
-    'https://saffron5-institute.netlify.app', // your netlify URL
+    'https://saffron5health-institute.netlify.app',   // Netlify production link
     'https://institute.saffron5health.com',   // your real domain
   ],
   credentials: true,
